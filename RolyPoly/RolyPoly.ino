@@ -34,6 +34,7 @@ unsigned long nextTimeMovePrey = 0;
 unsigned long nextTimePred = 0;
 unsigned long nextTimeMovePred = 0;
 unsigned long nextTimeM = 0;
+unsigned long nextTimePredOn = 0;
 unsigned long deltaGame = 15000;
 unsigned long deltaPrey = 250;
 unsigned long deltaMovePrey = 100;
@@ -41,6 +42,7 @@ unsigned long deltaPred = 125;
 unsigned long deltaMovePred = 2 * deltaMovePrey;
 unsigned long deltaM = 3;
 unsigned long deltaScore = 4000;
+unsigned long deltaPredOn = 125;
 unsigned long m = 1;
 bool preyOn = false; 
 bool predOn = false;
@@ -138,13 +140,19 @@ void loop() {
       if (prey[1] == col) {
         digitalWrite(prey[0], HIGH); 
       }
-      if (pred[1] == col || pred[1] -1 == col) {
-        digitalWrite(pred[0], HIGH);
-        digitalWrite(pred[0] + 1, HIGH);
+      if (predOn) {
+        if (pred[1] == col || pred[1] -1 == col) {
+          digitalWrite(pred[0], HIGH);
+          digitalWrite(pred[0] + 1, HIGH);
+        }
       }
       m++;
       nextTimeM += deltaM;
     }
+  }
+  if (now >= nextTimePredOn) {
+    predOn = !predOn;
+    nextTimePredOn += deltaPredOn;
   }
 
   else {                         // show the score etc.
